@@ -1,0 +1,30 @@
+Домашнє завдання: 
+вибрати дані по умовах
+
+- вік на момент реєстрації 15-20 років
+	db.persons.find({age:{$gte:15, $lte:20}}).pretty()
+	
+- ім'я Іван, Богдан, Василь і 2 або 4 хобі
+
+	//усі користувачі на ім'я Іван, Богдан, Василь, в яких є 2 або 4 хобі
+	db.persons.find({$or:[{first_name:"Іван"},{first_name:"Богдан"},{first_name:"Василь"}],
+ 			$or:[{ "hobby": { $size: 2 } }, { "hobby": { $size: 4} }]}).pretty()
+
+	//усі користувачі на ім'я Іван, Богдан, Василь та усі яких є 2 або 4 хобі
+	db.persons.find({$or:[{first_name:"Іван"},{first_name:"Богдан"},{first_name:"Василь"},
+ 				{hobby: { $size: 2 } }, {hobby: { $size: 4} }]}).pretty()
+
+
+- більше 3 хобі
+	db.persons.find({"hobby.3": {$exists:true} }).pretty()
+
+- електронка закінчується на @ukr.net ($text, $regex)
+	db.persons.find({email:{$regex:/@ukr.net/}}).pretty()
+	
+- елементи в яких немає поля хобі
+	db.persons.find({hobby: {$exists:false}}).pretty()
+
+- поле імейл рівне NULL
+	db.persons.find({email:null})
+	//або так
+	db.persons.find({email:{$type:10}})
